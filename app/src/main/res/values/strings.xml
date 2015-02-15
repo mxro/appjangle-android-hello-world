@@ -2,7 +2,7 @@
 <resources>
 
     <string name="app_name">Appjangle Hello World</string>
-    <string name="hello_world">Hello world!</string>
+    <string name="creating_data">Creating data ...</string>
     <string name="action_settings">Settings</string>
 
 </resources>

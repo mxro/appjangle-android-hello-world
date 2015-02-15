@@ -1,13 +1,15 @@
 package helloworld.android.appjangle.com.appjanglehelloworld;
 
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.os.Handler;
+import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
-import android.view.MenuItem;
+import android.widget.TextView;
 
 import com.appjangle.android.AppjangleAndroid;
 
-import io.nextweb.Node;
+import io.nextweb.Link;
+import io.nextweb.Query;
 import io.nextweb.Session;
 
 
@@ -18,34 +20,37 @@ public class HelloWorldActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_hello_world);
 
+        final Session session = AppjangleAndroid.createSession(this.getApplicationContext());
 
-        Session session = AppjangleAndroid.createSession(this.getApplicationContext());
+        Link firstName = session.link("http://slicnet.com/mxrogm/mxrogm/xplr/.n/Appjangle_JS/.n/Examples/.n/Create_Person_Data/.n/First_Name");
+        Link lastName = session.link("http://slicnet.com/mxrogm/mxrogm/xplr/.n/Appjangle_JS/.n/Examples/.n/Create_Person_Data/.n/Last_Name");
 
-        Node n = session.link("to nowhere").get();
+        // Creating data
+        final Query john = session.seed();
+        john.append("John").append(firstName);
+        john.append("Smith").append(lastName);
+        session.commit().get();
 
-        n.monitor().get().stop().get();
 
-        session.close().get();
+        final Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                TextView t = (TextView)findViewById(R.id.output);
+
+                t.setText("Created data: "+john.get().uri());
+
+                session.close().get();
+            }
+        }, 100);
+
 
     }
 
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.hello_world, menu);
         return true;
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
 }
