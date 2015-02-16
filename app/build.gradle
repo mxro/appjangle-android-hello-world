@@ -28,7 +28,8 @@ dependencies {
 
 
 repositories {
-    maven { url 'http://localhost:8080/' }
+    //maven { url 'http://localhost:8080/' } // local repo
+    maven { url 'http://maven.appjangle.com/appjangle/releases'}
 }
 
 configurations.all {
